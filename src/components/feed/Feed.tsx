@@ -29,12 +29,32 @@ export default function Feed({ search = "" }: { search?: string }) {
     setError("");
 
     const news = await fetchNews(categories[0]);
-    const space = await fetchSpaceNews();
+const space = await fetchSpaceNews();
 
-    const merged = [...news, ...space];
+// Normalize NewsAPI
+const newsMapped: ContentItem[] = news.map((a: any, i: number) => ({
+  id: a.url || `news-${i}`,
+  title: a.title || "No title",
+  description: a.description || "No description",
+  image: a.urlToImage || "",
+  url: a.url || "",
+  source: a.source?.name || "News",
+}));
 
-    dispatch(setContent(merged));
-    setOrdered(merged);
+// Normalize Spaceflight API
+const spaceMapped: ContentItem[] = space.map((a: any, i: number) => ({
+  id: a.id ? String(a.id) : `space-${i}`,
+  title: a.title || "No title",
+  description: a.summary || "No description",
+  image: a.image_url || "",
+  url: a.url || "",
+  source: a.news_site || "Space",
+}));
+
+const merged = [...newsMapped, ...spaceMapped];
+
+dispatch(setContent(merged));
+setOrdered(merged);
   } catch (err) {
     console.error(err);
     setError("Failed to load content. Please try again.");
