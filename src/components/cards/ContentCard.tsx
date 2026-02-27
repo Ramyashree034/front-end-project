@@ -22,16 +22,25 @@ export default function ContentCard({
   const dispatch = useDispatch();
   const ref = useRef<HTMLDivElement>(null);
 
+  // SAFE IMAGE SOURCE
+  const imageSrc =
+    item.image && item.image.startsWith("http")
+      ? item.image.replace("http://", "https://")
+      : "/images/fallback.jpg";
+
+  // DROP
   const [, drop] = useDrop<DragItem>({
     accept: "CARD",
     hover(dragItem) {
       if (!ref.current) return;
       if (dragItem.index === index) return;
+
       moveCard(dragItem.index, index);
       dragItem.index = index;
     },
   });
 
+  // DRAG
   const [{ isDragging }, drag] = useDrag({
     type: "CARD",
     item: { index },
@@ -45,40 +54,34 @@ export default function ContentCard({
   return (
     <motion.div
       ref={ref}
-      className="bg-white shadow-md hover:shadow-xl transition rounded-xl overflow-hidden cursor-move"
+      className="bg-white shadow-md hover:shadow-xl transition-shadow duration-200 rounded-xl overflow-hidden cursor-move"
       style={{ opacity: isDragging ? 0.5 : 1 }}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      initial={{ opacity: 0, y: 10 }}
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: 0.25 }}
     >
-     const imageSrc =
-  item.image &&
-  item.image.startsWith("http")
-    ? item.image.replace("http://", "https://")
-    : "/images/fallback.jpg";
+      <img
+        src={imageSrc}
+        onError={(e) => {
+          e.currentTarget.src = "/images/fallback.jpg";
+        }}
+        className="w-full h-40 object-cover"
+      />
 
-<img
-  src={imageSrc}
-  onError={(e) => {
-    e.currentTarget.src = "/images/fallback.jpg";
-  }}
-  className="w-full h-40 object-cover"
-/>
-
-      <div className="p-4 space-y-2">
-        <h3 className="font-semibold text-lg leading-snug line-clamp-2">
+      <div className="p-3 space-y-2">
+        <h3 className="font-semibold text-lg line-clamp-2">
           {item.title}
         </h3>
 
-        <p className="text-sm text-gray-600 line-clamp-2">
+        <p className="text-sm text-gray-600 line-clamp-3">
           {item.description}
         </p>
 
         <button
           onClick={() => dispatch(toggleFavorite(item))}
-          className="pt-1 text-sm text-red-500 hover:text-red-600 transition"
+          className="mt-3 text-sm text-red-500 hover:text-red-600"
         >
           ❤️ Favorite
         </button>
