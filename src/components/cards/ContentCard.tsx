@@ -53,17 +53,17 @@ export default function ContentCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2 }}
     >
-     <img
-  src={
-    item.image?.replace("http://", "https://") ||
-    "https://via.placeholder.com/400x200"
-  }
-  onError={(e) => {
-    (e.currentTarget as HTMLImageElement).src =
-      "https://via.placeholder.com/400x200";
-  }}
-  className="w-full h-40 object-cover"
-/>
+      <img
+       src={
+      item.image?.replace("http://", "https://") ||
+      "/images/fallback.jpg"
+      }
+     onError={(e) => {
+     (e.currentTarget as HTMLImageElement).src =
+      "/images/fallback.jpg";
+      }}
+      className="w-full h-40 object-cover"
+      />
 
       <div className="p-4 space-y-2">
         <h3 className="font-semibold text-lg leading-snug line-clamp-2">
