@@ -9,7 +9,7 @@ The app fetches and displays user-preferred content dynamically from multiple AP
 👉 https://your-live-link.vercel.app  
 
 ## 🎥 Demo Video
-👉 https://your-video-link  
+👉 https://front-end-project-jet-five.vercel.app/
 
 ---
 
